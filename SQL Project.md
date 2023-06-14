@@ -1,5 +1,7 @@
 # SQL Project by Emmanuel Ikogho
 
+This project uses SQL to answer five questions about a fictional online retail company. The data for the project is provided in the Northwind database.
+
 ## Question 1: What are the total sums of freights of ship cities that have orders from 2 or more customers?
 
 ```sql
@@ -73,3 +75,17 @@ ORDER BY 'Revenue Before Discount' DESC;
 ```
 
 This query calculates the revenues per supplier in the year 2013 before and after discounts are applied. It joins the "OrderDetail," "Order," "Product," and "Supplier" tables based on the corresponding IDs and filters the results to include only orders from 2013. The revenues before and after discount are calculated and grouped by the supplier. The results are sorted in descending order of revenue before discount.
+
+
+## Instructions
+
+1. To run the project, you will need to have a SQL database installed and running.
+2. Open a SQL client and connect to the database.
+3. Copy and paste the queries into the SQL client.
+4. Run the queries one at a time.
+5. The results of the queries will be displayed in the SQL client.
+
+## Notes
+
+* The queries in this project are written for the `Northwind` database. If you are using a different database, you may need to modify the queries to reflect the schema of your database.
+* The results of the queries may vary depending on the data in your database.
