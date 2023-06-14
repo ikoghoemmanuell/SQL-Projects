@@ -2,7 +2,7 @@
 
 This project uses SQL to answer five questions about a fictional online retail company. The data for the project is provided in the Northwind database.
 
-## Question 1: What are the total sums of freights of ship cities that have orders from 2 or more customers?
+## 1. What are the total sums of freights of ship cities that have orders from 2 or more customers?
 
 ```sql
 SELECT ShipCity,
@@ -17,7 +17,7 @@ This query retrieves ship cities along with the total number of unique customers
 
 .
 
-## Question 2: Generate a table of employees and the number of customers they handle.
+## 2. Generate a table of employees and the number of customers they handle.
 
 ```sql
 SELECT e.FirstName, e.LastName, COUNT(DISTINCT o.CustomerId) AS Customers
@@ -31,7 +31,7 @@ This query creates a table that lists employees along with the number of unique 
 
 .
 
-## Question 3: How many orders were made each year?
+## 3. How many orders were made each year?
 
 ```sql
 SELECT strftime('%Y', OrderDate) AS 'Year', COUNT(Id) AS Orders
@@ -44,7 +44,7 @@ This query retrieves the number of orders made each year. It uses the strftime f
 
 .
 
-## Question 4: What quantity of the product ‘Chang’ was shipped in 2014?
+## 4. What quantity of the product ‘Chang’ was shipped in 2014?
 
 ```sql
 SELECT p.ProductName, SUM(od.Quantity) AS Quantity
@@ -59,7 +59,7 @@ This query retrieves the quantity of the product 'Chang' that was shipped in the
 
 .
 
-## Question 5: What are the revenues per supplier in 2013 before and after discount applied? Show both values in a single table.
+## 5. What are the revenues per supplier in 2013 before and after discount applied? Show both values in a single table.
 
 ```sql
 SELECT s.CompanyName AS Supplier,
