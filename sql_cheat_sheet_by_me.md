@@ -1,3 +1,4 @@
+```sql
 CREATE TABLE student(
     student_id INT AUTO_INCREMENT,
     name VARCHAR(20) NOT NULL,
@@ -25,7 +26,7 @@ WHERE name = 'Tom' AND major = 'undecided';
 
 SELECT *
 FROM student                                                  --LIMIT 5
-LIMIT 2;   
+LIMIT 2;
 
 SELECT distinct student.name, student.major                   --exclude duplicates
 FROM student
@@ -60,7 +61,7 @@ CREATE TABLE branch (                                       --CREATE TABLE
 ALTER TABLE employee
 ADD FOREIGN KEY(branch_id)                                  --FOREIGN KEY
 REFERENCES branch(branch_id)
-ON DELETE SET NULL;                         
+ON DELETE SET NULL;
 
 CREATE TABLE works_with (
   emp_id INT,
@@ -173,3 +174,16 @@ WHERE LOWER(LEFT(city, 1)) IN ('a', 'e', 'i', 'o', 'u')
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+```
