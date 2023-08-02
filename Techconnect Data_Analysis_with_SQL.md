@@ -65,7 +65,7 @@ The single most important question we need to answer is: Why exactly are people 
 
 **1.0 How do customers spend their money on different services such as voice, data, SMS, and other offerings. Identify the most popular services among customers.**
 
-
+```sql
     SELECT
         'Voice' AS Service,
         SUM(VOICE_SPENT) AS TotalSpent
@@ -90,7 +90,7 @@ The single most important question we need to answer is: Why exactly are people 
     FROM
         dbo.customers
     ORDER BY TotalSpent DESC;
-    
+ ```   
 
 **1.1 Result**
 Voice is the most popular service that our customers spend money on. This means our customers mostly make calls, followed by sending text messages, followed by buying data.
@@ -108,7 +108,7 @@ Since voice is the most popular service, lets take a closer look at the customer
 
 **2.0 What is the device_type of customers that spend money to make calls?**
 
-
+```sql
      --Voice Spending Variation Based on Customer's Device Type
     
     -- Query to get voice spending for smartphone and non-smartphone users
@@ -123,7 +123,7 @@ Since voice is the most popular service, lets take a closer look at the customer
     LEFT JOIN dbo.location 
     ON dbo.customers.Cell_ID = dbo.location.CELL_ID
     GROUP BY dbo.location.cell_type;
-
+```
 **2.1 Result**
 Majority of our voice customers are smartphone users.
 
@@ -134,14 +134,14 @@ Majority of our voice customers are smartphone users.
 
 **3.0 Top recharge method used by customers**
 
-
+```sql
     --top recharge method used by customers
     SELECT 
            SUM(RECHARGE_EVD_AMOUNT) AS evd,
            SUM(RECHARGE_MOMO_AMOUNT) AS momo,
            SUM(RECHARGE_CARD_AMOUNT) AS recharge_card
     FROM dbo.customers;
-
+```
 **3.1 Result**
 Most customers use recharge card as their recharge method
 
@@ -150,7 +150,7 @@ Most customers use recharge card as their recharge method
 
 **4.0 Can existing customers be upsold to higher-value data plans?** 
 
-
+```sql
     SELECT TOP 10
         Customer_ID,
         SUM(Data_Vol_MB) AS Total_Data_MB,
@@ -159,7 +159,7 @@ Most customers use recharge card as their recharge method
     GROUP BY Customer_ID
     HAVING SUM(Data_Vol_MB) = 0
     ORDER BY TOTAL_RECHARGE_AMOUNT DESC;
-
+```
 **4.1 Result**
 Yes, some customers have high recharge amount but no data at all, so they can be convinced to buy data.
 
@@ -174,7 +174,7 @@ Now let's look at the MONEY.🤑
 
 **1.0 Who are our best customers?**
 
-
+```sql
     --Top 5 customers by total revenue:
     SELECT TOP 5
         cob.Customer_ID AS top_customers_by_revenue,
@@ -194,7 +194,7 @@ Now let's look at the MONEY.🤑
     JOIN dbo.customers cust ON cob.Customer_ID = cust.Customer_ID
     GROUP BY cob.Customer_ID
     ORDER BY total_spending DESC;
-
+```
 **1.1 Result**
 From the tables below, our top spenders don’t make us the most money, but customers who make us the most money (total_revenue) may not be the best spenders. This goes to show that revenue does not correlate with spending.
 
@@ -203,7 +203,7 @@ From the tables below, our top spenders don’t make us the most money, but cust
 
 **2.0 What are the main sources of revenue for the company.**
 
-
+```sql
     --Revenue breakdown by revenue types
     SELECT
         SUM(cob.rev_data_total) AS data_revenue,
@@ -211,7 +211,7 @@ From the tables below, our top spenders don’t make us the most money, but cust
         SUM(cob.rev_other_vas) AS vas_revenue,
         SUM(cob.rev_rentals) AS rentals_revenue
     FROM dbo.current_offers_balance cob;
-
+```
 **2.1 Result**
 Voice is the major revenue source of the company. However, we are loosing a lot of money from rentals. Meaning our customers borrow data, voice and value added services from us, this borrowing of services is causing us to loose potential revenue.
 
@@ -220,13 +220,13 @@ Voice is the major revenue source of the company. However, we are loosing a lot 
 
 **3.0 Do we make more money from incoming calls and texts sent to our customers, or otherwise?**
 
-
+```sql
     --percentage of total revenue from services coming in Vs out
     SELECT
             (SUM(tot_rev_in) / SUM(tot_rev)) * 100 AS total_rev_in_percentage,
             (SUM(tot_rev_out) / SUM(tot_rev)) * 100 AS total_rev_out_percentage
     FROM dbo.current_offers_balance;
-
+```
 **3.1 Result**
 We make more money from outgoing services; when our customers send text messages to outside networks, or when our customers make calls to other networks.
 
@@ -235,7 +235,7 @@ We make more money from outgoing services; when our customers send text messages
 
 **4.0 How much money have we lost from customers who left (churned).**
 
-
+```sql
     -- Calculate total revenue for each distinct value of status (pie chart)
     SELECT
         'ACTIVE' AS status, SUM(tot_rev) AS tot_rev
@@ -255,7 +255,7 @@ We make more money from outgoing services; when our customers send text messages
         'CHURNED' AS status, SUM(tot_rev) AS tot_rev
     FROM dbo.current_offers_balance
     WHERE status IN ('CHURNED', 'CHURN');
-
+```
 **4.1 Result**
 From the table below, it appears that we didn’t make much money from customers who left or churned; compared to revenue from our active customers.
 
@@ -264,13 +264,13 @@ From the table below, it appears that we didn’t make much money from customers
 
 **5.0 Do we make more money from international services and transactions?**
 
-
+```sql
     --international vs domestic voice revenue
     SELECT
         SUM(rev_voice_int) + SUM(rev_voice_roam_incoming) + SUM(rev_voice_roam_outgoing) AS total_international_revenue,
         SUM(tot_rev) - (SUM(rev_voice_int) + SUM(rev_voice_roam_incoming) + SUM(rev_voice_roam_outgoing)) AS total_domestic_revenue
     FROM dbo.current_offers_balance;
-
+```
 **5.1 Result**
 No, we make more money locally.
 
@@ -279,13 +279,13 @@ No, we make more money locally.
 
 **6.0 Which handset models bring more revenue?**
 
-
+```sql
     -- Calculate total revenue for each distinct value of hs_model
     SELECT TOP 5 hs_model, SUM(tot_rev) AS total_revenue
     FROM dbo.current_offers_balance
     GROUP BY hs_model
     ORDER BY SUM(tot_rev) DESC;
-
+```
 **6.1 Result**
 We make the most money from android smartphone users.
 
@@ -297,7 +297,7 @@ We make the most money from android smartphone users.
 
 **1.0 Compare the spending patterns of customers in different regions and identify which services are more popular in each region.**
 
-
+```sql
     --Compare the spending patterns of customers in different regions and
     -- Identify which services are more popular in each region
     SELECT TOP 5
@@ -325,7 +325,7 @@ We make the most money from android smartphone users.
         loc.region
     ORDER BY
             total_voice_spent DESC; --we order by voice since voice is the most popular service across all regions;
-
+```
 **1.1 Result**
 The top regions are the “Greater Accra Region” and the “Ashanti Region” by spending. Voice is the most popular service for all regions. 
 
@@ -337,7 +337,7 @@ Spending rate might not determine revenue, meaning that we might make more money
 
 **2.0 What are the most profitable regions?**
 
-
+```sql
     --Compare the total_revenue of customers in different regions
     SELECT TOP 5
             l.region AS Region, 
@@ -347,7 +347,7 @@ Spending rate might not determine revenue, meaning that we might make more money
     JOIN dbo.location l ON cu.Cell_ID = l.CELL_ID
     GROUP BY l.region
     ORDER BY Total_Revenue DESC;
-
+```
 **2.1 Result**
 The top regions are the “Greater Accra Region” and the “Western Region” by revenue.
 
@@ -360,7 +360,7 @@ The top regions are the “Greater Accra Region” and the “Western Region” 
 
 **1.0 Which regions have the highest churn rate?**
 
-
+```sql
     --Actionable insight: Use insights from high revenue regions to create personalized offerings and improve customer experiences in other regions.
     --regions with the highest churn rate
     --The Volta Region has the highest churn rate but 3rd highest revenue
@@ -373,7 +373,7 @@ The top regions are the “Greater Accra Region” and the “Western Region” 
     LEFT JOIN dbo.current_offers_balance co ON c.customer_id = co.customer_id
     GROUP BY l.region
     ORDER BY churn_rate_percentage DESC;
-
+```
 **1.1 Result**
 The Volta Region has the highest churn rate but brings the 3rd highest revenue.
 
@@ -385,14 +385,14 @@ The Volta Region has the highest churn rate but brings the 3rd highest revenue.
 **2.0 Evaluate the effectiveness of the loyalty program. how customers engage with it.**
 The loyalty program was put in place to encourage our active customers to stay with us and continue to pay for our services.
 
-
+```sql
     SELECT DISTINCT loyalty_points_balance
     FROM dbo.current_offers_balance;
     SELECT DISTINCT loyalty_points_redeemed
     FROM dbo.current_offers_balance;
     SELECT DISTINCT loyalty_points_earned
     FROM dbo.current_offers_balance;
-
+```
 **2.1 Result**
 Its time to try something other than loyalty points cuz customers have not responding to it. Either that or it was recently introduced and needs some time to kick off.
 
@@ -404,7 +404,7 @@ Its time to try something other than loyalty points cuz customers have not respo
 
 **1.0 Compare the revenue made from customers on 2G networks to the revenue from others.**
 
-
+```sql
     SELECT '2G' AS nw_2g_ind, SUM(tot_rev) AS Total_Revenue 
     FROM dbo.current_offers_balance WHERE nw_2g_ind = -1
     UNION ALL
@@ -413,7 +413,7 @@ Its time to try something other than loyalty points cuz customers have not respo
     UNION ALL
     SELECT '4G' AS nw_2g_ind, SUM(tot_rev) AS Total_Revenue 
     FROM dbo.current_offers_balance WHERE nw_2g_ind = 1;
-
+```
 **1.1 Result**
 We should advertise to those using 2G network to upgrade to 3G or 4G.
 
